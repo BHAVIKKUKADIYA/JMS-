@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+body {
+  background-color: #dfdfdf;
+  margin: 0;
+}
+
+.logo {
+  color: #2a251d;
+  font-weight: bold;
+}
+
+.btn-logout {
+  background: transparent;
+  border: 1.5px solid currentColor;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-logout:hover {
+  transform: scale(0.97);
+}
