@@ -43,17 +43,23 @@ const Login = () => {
 
     try {
       const res = await axios.post('http://localhost:5000/api/auth/login', formData);
+
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('role', res.data.role);
 
+      window.dispatchEvent(new Event("authChange"));
+      window.dispatchEvent(new Event("storage"));
+
       navigate('/home', {
+        replace: true,
         state: { notification: "Successfully logged in to your account." }
       });
+
     } catch (err) {
       if (err.response && err.response.data.message) {
         setError(err.response.data.message);
       } else {
-        setError("Something went wrong.");
+        setError("Invalid email or password.");
       }
     }
   };
@@ -96,7 +102,7 @@ const Login = () => {
               required
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700">Password</label>
             <div className="relative">
@@ -117,12 +123,12 @@ const Login = () => {
               />
             </div>
           </div>
-          
+
           <button type="submit" className="w-full px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 transition duration-200">
             Login
           </button>
         </form>
-        
+
         <p className="text-sm text-center text-gray-600">
           New here? <Link to="/register" className="text-blue-600 hover:underline">Create an account</Link>
         </p>

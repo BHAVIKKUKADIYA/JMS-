@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
@@ -8,6 +9,17 @@ import EditProduct from './pages/EditProduct';
 import ProductDetails from './pages/ProductDetails';
 
 function App() {
+  const [token, setToken] = useState(localStorage.getItem('token'));
+
+  useEffect(() => {
+    const handleAuthChange = () => {
+      setToken(localStorage.getItem('token'));
+    };
+
+    window.addEventListener('authChange', handleAuthChange);
+    return () => window.removeEventListener('authChange', handleAuthChange);
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#dfdfdf]">
       <Router>
@@ -17,14 +29,14 @@ function App() {
             path="/"
             element={<Navigate to="/login" replace />}
           />
-          
+
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
           <Route
             path="/home"
             element={
-              localStorage.getItem('token') ? (
+              token ? (
                 <Home />
               ) : (
                 <Navigate to="/login" replace />
@@ -35,7 +47,7 @@ function App() {
           <Route
             path="/add-product"
             element={
-              localStorage.getItem('token') ? (
+              token ? (
                 <AddProduct />
               ) : (
                 <Navigate to="/login" replace />
@@ -46,7 +58,7 @@ function App() {
           <Route
             path="/edit-product/:id"
             element={
-              localStorage.getItem('token') ? (
+              token ? (
                 <EditProduct />
               ) : (
                 <Navigate to="/login" replace />
@@ -57,7 +69,7 @@ function App() {
           <Route
             path="/product/:id"
             element={
-              localStorage.getItem('token') ? (
+              token ? (
                 <ProductDetails />
               ) : (
                 <Navigate to="/login" replace />
